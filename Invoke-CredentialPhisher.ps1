@@ -125,10 +125,10 @@ function Invoke-CredentialPhisher {
         $VerifyCreds = $true,
 
         [switch]
-        $EnableToastNotificationsIfDisabled = $true,
+        $EnableToastNotificationsIfDisabled = $false,
 
         [switch]
-        $HideProcesses = $true
+        $HideProcesses = $false
     )
 
     #region functions
