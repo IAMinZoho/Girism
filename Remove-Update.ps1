@@ -1,7 +1,3 @@
-
-
-
-
 function Remove-Update {
 <#
 .SYNOPSIS
