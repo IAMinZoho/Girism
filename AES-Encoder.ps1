@@ -1,6 +1,6 @@
 ﻿Set-StrictMode -Version Latest
 $console = $host.UI.RawUI
-$console.WindowTitle = "Powershell Crypter"
+$console.WindowTitle = "Powershell Crypter - Let us fool that AV!"
 $ErrorActionPreference = "Stop"
 $PSDefaultParameterValues['*:ErrorAction']='Stop'
 
