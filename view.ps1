@@ -1,15 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
 function amputated
 {
 
