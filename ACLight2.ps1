@@ -967,7 +967,7 @@ function Start-ACLsAnalysis {
 
         Write-Output "`n------------ FINISHED ------------"
         Write-host "`n Discovered $numberAccounts privileged accounts" -ForegroundColor Yellow
-        write-host "`n Privileged ACLs scan was completed - the results are saved in the below folder:`n Don't miss the `"Final Report`""-ForegroundColor Yellow
+        write-host "`n Privileged ACLs scan was completed - the results are saved in the folder`n  And, don't miss the `"Final Report`""-ForegroundColor Yellow
 
         $time.Stop()
         $runtime = $time.Elapsed.TotalMilliseconds
