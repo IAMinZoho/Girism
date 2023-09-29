@@ -704,9 +704,8 @@ function Start-ACLsAnalysis {
         write-output "ACLight2 - a tool for advanced discovery of Privileged Accounts - including risky Shadow Admins`n"
         write-output "             Developed by Asaf Hecht (@Hechtov)"
         write-output " Uses functions from the great PowerView project (@harmj0y)"
-        write-output "           Follow Twitter for more future updates`n`n"
 
-        Write-Output "Great, the scan was started - version 3.3.`nIt could take a while, (5-30+ mins) depends on the size of the network"
+        Write-Output "Great, the scan was started - version 3.3.`n It could take a while, (5-30+ mins) depends on the size of the network"
 
         $PathFolder = $exportCsvFolder
         $PathFolder = $PathFolder.substring($PathFolder.length - 1, 1)
@@ -724,10 +723,10 @@ function Start-ACLsAnalysis {
             $DomainList = Get-NetForestDomain
             $domainNumber = $DomainList.count
             if ($domainNumber -eq 1){
-                Write-Output "Discovered $domainNumber Domain"
+                Write-Output " Discovered $domainNumber Domain"
             }
             else {
-                Write-Output "Discovered $domainNumber Domains"
+                Write-Output " Discovered $domainNumber Domains"
             }
         }
         $count = 0
@@ -746,7 +745,7 @@ function Start-ACLsAnalysis {
         # run ACLs analysis
         foreach ($Domain in $DomainList){
             $domainLayerCounter = 1
-            Write-Output "`n******************************`nStarting analysis for Domain: $Domain - Layer $domainLayerCounter"
+            Write-Output "`n*******************************************************************`nStarting analysis for Domain: $Domain - Layer $domainLayerCounter"
             $exportCsvFile = $exportCsvFolder
             $exportCsvFile += $Domain
             $exportCsvFile += " - Full Output.csv"
@@ -967,7 +966,7 @@ function Start-ACLsAnalysis {
 
         Write-Output "`n------------ FINISHED ------------"
         Write-host "`n Discovered $numberAccounts privileged accounts" -ForegroundColor Yellow
-        write-host "`n Privileged ACLs scan was completed - the results are saved in the folder`n  And, don't miss the `"Final Report`""-ForegroundColor Yellow
+        write-host "`n Master, Privileged ACLs scan was completed and the results are saved in the folder.`n  Master, do not miss the `"Final Report`""-ForegroundColor Yellow
 
         $time.Stop()
         $runtime = $time.Elapsed.TotalMilliseconds
