@@ -701,11 +701,10 @@ function Start-ACLsAnalysis {
 "
         write-output $title
 
-        write-output "ACLight2 - a tool for advanced discovery of Privileged Accounts - including risky Shadow Admins`n"
+        write-output " ACLight2 - a tool for advanced discovery of Privileged Accounts - including risky Shadow Admins`n"
         write-output "             Developed by Asaf Hecht (@Hechtov)"
-        write-output " Uses functions from the great PowerView project (@harmj0y)"
 
-        Write-Output "Great, the scan was started - version 3.3.`n It could take a while, (5-30+ mins) depends on the size of the network"
+        Write-Output " Master, the scan was started - version 3.3.`n It could take a while, (5-30+ mins) depends on the size of the network"
 
         $PathFolder = $exportCsvFolder
         $PathFolder = $PathFolder.substring($PathFolder.length - 1, 1)
