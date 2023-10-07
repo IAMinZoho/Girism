@@ -1,4 +1,6 @@
 # Girism
+Guided Infiltration and Reconnaissance Initiative for System Manipulation (GIRISM)
+
 *Automating Penetration testing of Active Directory*
 
 Import-Module .\Girism.ps1
