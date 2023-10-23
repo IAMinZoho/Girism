@@ -170,7 +170,7 @@ function Start-Webserver
 
 			# is there a fixed coding for the request?
 			$RECEIVED = '{0} {1}' -f $REQUEST.httpMethod, $REQUEST.Url.LocalPath
-			if (($RECEIVED -eq "GET /") -and ($NOIDXFILE)) { $RECEIVED = "GET /command" }
+			#if (($RECEIVED -eq "GET /") -and ($NOIDXFILE)) { $RECEIVED = "GET /command" }
 			$HTMLRESPONSE = $HTMLRESPONSECONTENTS[$RECEIVED]
 			$RESULT = ''
 
