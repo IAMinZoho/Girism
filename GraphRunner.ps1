@@ -1,3 +1,4 @@
+$ErrorActionPreference = "SilentlyContinue" ; Set-StrictMode -Off
 Write-Host -ForegroundColor green "
   ________                     __      _______                                      
  /_______/___________  ______ |  |____/_______\__ __  ____   ____   ___________ 
