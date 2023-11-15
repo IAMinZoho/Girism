@@ -1,12 +1,11 @@
 Write-Host -ForegroundColor green "
-  ________                     __      _______      by Beau Bullock (@dafthack)                                
+  ________                     __      _______                                      
  /_______/___________  ______ |  |____/_______\__ __  ____   ____   ___________ 
 /___\  __\______\____\ \_____\|__|__\|________/__|__\/____\ /____\_/____\______\
 \    \_\  \  | \// __ \|  |_/ |   Y  \    |   \  |  /   |  \   |  \  ___/|  | \/
  \________/__|  (______/__|   |___|__|____|___/____/|___|__/___|__/\___| >__|   
                  Do service principals dream of electric sheep?
                        
-For usage information see the wiki here: https://github.com/dafthack/GraphRunner/wiki
 To list GraphRunner modules run List-GraphRunnerModules
 "
 
