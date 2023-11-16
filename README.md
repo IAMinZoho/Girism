@@ -19,5 +19,8 @@ I found out that the reason for an empty password in Active Directory can be fou
 In this attribute the flag “PASSWD_NOTREQD” can be set. If this flag is set, a domain administrator can issue an empty password, evading the password policy.
 For accounts with the flag “PASSWD_NOTREQD” set, the attribute “UserAccountControl” has the value 544.
 
+# Store password using reversible encryption
+After you set the user attribute in the "Account" tab, as store password using reversible encription, you must reset password to see the password fetched from the mimikatz command 
+
 # Clean the file share as post cleanup routine:
 Type in Run window: 'fsmgmt.msc'
