@@ -22,5 +22,12 @@ For accounts with the flag “PASSWD_NOTREQD” set, the attribute “UserAccoun
 # Store password using reversible encryption
 After you set the user attribute in the "Account" tab, as store password using reversible encription, you must reset password to see the password fetched from the mimikatz command 
 
+# C# projects that can be called:
+Choose option 16:
+
+PingCastle: https://github.com/IAMinZoho/Girism/raw/main/PingCastle.exe
+
+P0wnedshell: https://github.com/IAMinZoho/Girism/blob/main/calc.exe?raw=true
+
 # Clean the file share as post cleanup routine:
 Type in Run window: 'fsmgmt.msc'
