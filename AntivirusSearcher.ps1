@@ -130,8 +130,6 @@ function Get-AV {
 
 Get-AV
 
-Write-Host `r`n
-
 Write-Host "[*] Realtime Anti-Malware Finder Completed Successfully !`r`n" -ForeGroundColor Cyan
 
 Read-Host "Press any key to exit..."
