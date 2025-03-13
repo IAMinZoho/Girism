@@ -124,7 +124,7 @@ function Get-AV {
     $f=0
     $AVSvc | % { Get-Service -DisplayName $_* | Where-Object {$_.Status -match 'Running'} | % { Write-Host $_.DisplayName`t -f White -b DarkBlue; $f++ } }
     if (!$f) {
-        Write-Host "Master, No AV found in this system" -ForeGroundColor Red
+        Write-Host "[*] Master, No AV found in this system" -ForeGroundColor Red
     }
 }
 
