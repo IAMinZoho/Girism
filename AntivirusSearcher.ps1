@@ -124,12 +124,12 @@ function Get-AV {
     $f=0
     $AVSvc | % { Get-Service -DisplayName $_* | Where-Object {$_.Status -match 'Running'} | % { Write-Host $_.DisplayName`t -f White -b DarkBlue; $f++ } }
     if (!$f) {
-        Write-Host "[*] Master, No AV found in this system" -ForeGroundColor Red
+        Write-Host "[*] Master, No AV found in this system `r`n" -ForeGroundColor Red
     }
 }
 
 Get-AV
 
-Write-Host "[*] Realtime Anti-Malware Finder Completed Successfully !`r`n" -ForeGroundColor Cyan
+Write-Host "[*] Realtime Anti-Malware Finder Completed Successfully!`r`n" -ForeGroundColor Cyan
 
 Read-Host "Press any key to exit..."
