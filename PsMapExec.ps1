@@ -334,8 +334,6 @@ Documentation: https://viperone.gitbook.io/pentest-everything/psmapexec
  | |     ____) | |  | |/ ____ \| |    | |____ / . \| |___| |____ 
  |_|    |_____/|_|  |_/_/    \_\_|    |______/_/ \_\______\_____|
                                                                  
-
-Github  : https://github.com/The-Viper-One
 Version : 0.7.5")
 
     # Display banner once then prevent for consecutive execution
