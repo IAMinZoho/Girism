@@ -31,10 +31,10 @@ foreach ($AV in $AVSvc) {
     Write-Host "    - " -NoNewline
     foreach ($char in $chars) {
         Write-Host $char -NoNewline
-        Start-Sleep -Milliseconds 10  # Animating each character with a slight delay
+        Start-Sleep -Milliseconds 10
     }
-    Write-Host ""  # Move to the next line
-    Start-Sleep -Milliseconds 10  # Pause after displaying the name before the next one
+    Write-Host ""
+    Start-Sleep -Milliseconds 10
 }
 
 Write-Host `r`n
@@ -78,12 +78,9 @@ function Get-AntiVirusProduct {
     [parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName=$true)]
     [Alias('name')]
     $computername=$env:computername
-
-
     )
 
-    #$AntivirusProducts = Get-WmiObject -Namespace "root\SecurityCenter2" -Query $wmiQuery  @psboundparameters # -ErrorVariable myError -ErrorAction 'SilentlyContinue' # did not work            
-     $AntiVirusProducts = Get-WmiObject -Namespace "root\SecurityCenter2" -Class AntiVirusProduct  -ComputerName $computername
+    $AntiVirusProducts = Get-WmiObject -Namespace "root\SecurityCenter2" -Class AntiVirusProduct -ComputerName $computername
 
     $ret = @()
     foreach($AntiVirusProduct in $AntiVirusProducts){
@@ -101,7 +98,6 @@ function Get-AntiVirusProduct {
         default {$defstatus = "Unknown" ;$rtstatus = "Unknown"}
             }
 
-        #Create hash-table for each computer
         $ht = @{}
         $ht.Computername = $computername
         $ht.Name = $AntiVirusProduct.displayName
@@ -111,15 +107,11 @@ function Get-AntiVirusProduct {
         $ht.'Definition Status' = $defstatus
         $ht.'Real-time Protection Status' = $rtstatus
 
-
-        #Create a new object for each computer
         $ret += New-Object -TypeName PSObject -Property $ht 
     }
     Return $ret
 } 
-Get-AntiVirusProduct | out-file $env:userprofile\downloads\InstalledAVs.txt -force
-
-Write-Host "[*] List of Installed AVs Saved To Your Downloads Folder `r`n" -ForeGroundColor Green
+Get-AntiVirusProduct
 
 sleep 2
 
@@ -142,4 +134,4 @@ Write-Host `r`n
 
 Write-Host "[*] Realtime Anti-Malware Finder Completed Successfully !`r`n" -ForeGroundColor Cyan
 
-Read-Host "Press any key to continue..."
+Read-Host "Press any key to exit..."
