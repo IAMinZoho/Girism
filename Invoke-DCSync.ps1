@@ -121,8 +121,7 @@
 
         # Process output
         $finalOutput = $hashcatContent | ForEach-Object {
-            $_.Replace(",", "::aad3b435b51404eeaad3b435b51404ee:") + ":::"
-        }
+            $_.Replace(",", "::aad3b435b51404eeaad3b435b51404ee:") + ":::"}
 
         # Display formatted output with krbtgt highlight
         Write-Host "  ───────────────────────────────────────────────────────────" -ForegroundColor Cyan
