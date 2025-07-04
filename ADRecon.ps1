@@ -1,4 +1,7 @@
-﻿<#
+﻿$ErrorActionPreference = 'SilentlyContinue';
+$WarningPreference = 'SilentlyContinue';
+
+<#
 
 .SYNOPSIS
 
