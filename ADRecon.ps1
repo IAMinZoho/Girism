@@ -65,6 +65,9 @@ $WarningPreference = 'SilentlyContinue';
 
 #>
 
+function ADRecon
+{
+
 [CmdletBinding()]
 param
 (
@@ -13074,4 +13077,6 @@ Invoke-ADRecon -GenExcel $GenExcel -Method $Method -Collect $Collect -DomainCont
 If ($Log)
 {
     Stop-Transcript
+}
+
 }
