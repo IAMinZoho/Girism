@@ -1,3 +1,6 @@
+# Example: Setting global error action preference
+$ErrorActionPreference = "SilentlyContinue"
+
 Function PsMapExec {
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
