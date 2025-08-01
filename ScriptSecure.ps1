@@ -746,67 +746,79 @@ function Show-Results {
         }
     })
     
+
     # Export functionality
-    # Export functionality
+  # Export functionality
 $exportButton.Add_Click({
     $saveFileDialog = New-Object System.Windows.Forms.SaveFileDialog
     $saveFileDialog.Filter = "CSV files (*.csv)|*.csv|Text files (*.txt)|*.txt|All files (*.*)|*.*"
     $saveFileDialog.Title = "Export Results"
-    $saveFileDialog.FileName = "ScriptSecure_Results_$(Get-Date -Format 'yyyyMMdd_HHmmss').csv"
+    $saveFileDialog.FileName = "ScriptSecure_Results_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
     
     if ($saveFileDialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
         try {
             $exportPath = $saveFileDialog.FileName
+            $extension = [System.IO.Path]::GetExtension($exportPath).ToLower()
             
-            # Use the original, unfiltered results for the export
-            $resultsToExport = $originalResults
-            
-            # The original script had logic for CSV vs TXT, which is good.
-            # We will use this to ensure the correct export method.
-            if ([System.IO.Path]::GetExtension($exportPath) -eq ".csv") {
-                # Export the full results array to a CSV
-                $resultsToExport | Export-Csv -Path $exportPath -NoTypeInformation -Encoding UTF8
+            # First, create the properly formatted objects for export
+            $formattedResults = @()
+            foreach ($result in $originalResults) {
+                
+                # Handle different property names for file/path
+                $fileOrPath = ""
+                if ($result.File) { $fileOrPath = $result.File }
+                elseif ($result.Path) { $fileOrPath = $result.Path }
+                elseif ($result.ScriptPath) { $fileOrPath = $result.ScriptPath }
+                elseif ($result.User) { $fileOrPath = $result.User }
+                elseif ($result.GPO) { $fileOrPath = $result.GPO }
+                
+                # Handle different property names for details
+                $details = ""
+                if ($result.Pattern) { $details = $result.Pattern.ToString() }
+                elseif ($result.Match) { $details = $result.Match.ToString() }
+                elseif ($result.Reference) { $details = $result.Reference.ToString() }
+                elseif ($result.Threat) { $details = $result.Threat.ToString() }
+                elseif ($result.Error) { $details = $result.Error.ToString() }
+                elseif ($result.Setting) { $details = $result.Setting.ToString() }
+                elseif ($result.Status) { $details = $result.Status.ToString() }
+                
+                # Add the new, formatted object to our array
+                $formattedResults += [pscustomobject]@{
+                    Type = $result.Type
+                    'File/Path' = $fileOrPath
+                    Details = $details
+                    Remediation = $result.Remediation
+                }
             }
-            else {
-                # This part is for text export, which is a good feature to keep.
+            
+            if ($extension -eq '.csv') {
+                # Export the formatted array as a CSV
+                $formattedResults | Export-Csv -Path $exportPath -NoTypeInformation -Encoding UTF8
+            } else {
+                # Export as text, which already has the custom header
                 $textOutput = @()
                 $textOutput += "ScriptSecure Security Analysis Report"
                 $textOutput += "Generated: $(Get-Date)"
-                $textOutput += "Total Issues Found: $($resultsToExport.Count)"
+                $textOutput += "Total Issues Found: $($originalResults.Count)"
                 $textOutput += "=" * 80
                 $textOutput += ""
                 
-                $groupedResults = $resultsToExport | Group-Object -Property Type
+                # Use the formatted results to build the text report
+                $groupedResults = $formattedResults | Group-Object -Property Type
                 
                 foreach ($group in $groupedResults) {
                     $textOutput += "$($group.Name) Issues: $($group.Count)"
                     $textOutput += "-" * 40
                     
                     foreach ($result in $group.Group) {
-                        # Logic to format the output for a text file
-                        $fileOrPath = ""
-                        if ($result.File) { $fileOrPath = $result.File }
-                        elseif ($result.Path) { $fileOrPath = $result.Path }
-                        elseif ($result.ScriptPath) { $fileOrPath = $result.ScriptPath }
-                        elseif ($result.User) { $fileOrPath = $result.User }
-                        elseif ($result.GPO) { $fileOrPath = $result.GPO }
-                        
-                        $details = ""
-                        if ($result.Pattern) { $details = $result.Pattern.ToString() }
-                        elseif ($result.Match) { $details = $result.Match.ToString() }
-                        elseif ($result.Reference) { $details = $result.Reference.ToString() }
-                        elseif ($result.Threat) { $details = $result.Threat.ToString() }
-                        elseif ($result.Error) { $details = $result.Error.ToString() }
-                        elseif ($result.Setting) { $details = $result.Setting.ToString() }
-                        elseif ($result.Status) { $details = $result.Status.ToString() }
-                        
-                        $textOutput += "File/Path: $fileOrPath"
-                        $textOutput += "Details: $details"
+                        $textOutput += "File/Path: $($result.'File/Path')"
+                        $textOutput += "Details: $($result.Details)"
                         $textOutput += "Remediation: $($result.Remediation)"
                         $textOutput += ""
                     }
                     $textOutput += ""
                 }
+                
                 $textOutput | Out-File -FilePath $exportPath -Encoding UTF8
             }
             
