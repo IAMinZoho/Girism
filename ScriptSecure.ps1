@@ -696,40 +696,41 @@ function Show-Results {
     
     # Function to populate the ListView with results
     function Populate-ListView {
-        param(
-            [array]$itemsToDisplay
-        )
+    param(
+        [array]$itemsToDisplay
+    )
+    
+    $listView.Items.Clear()
+    
+    foreach ($result in $itemsToDisplay) {
+        $item = New-Object System.Windows.Forms.ListViewItem($result.Type)
         
-        $listView.Items.Clear()
+        # Handle different property names for file/path
+        $fileOrPath = ""
+        if ($result.File) { $fileOrPath = $result.File }
+        elseif ($result.Path) { $fileOrPath = $result.Path }
+        elseif ($result.ScriptPath) { $fileOrPath = $result.ScriptPath }
+        elseif ($result.User) { $fileOrPath = $result.User }
+        elseif ($result.GPO) { $fileOrPath = $result.GPO }
         
-        foreach ($result in $itemsToDisplay) {
-            $item = New-Object System.Windows.Forms.ListViewItem($result.Type)
-            
-            # Handle different property names for file/path
-            $fileOrPath = ""
-            if ($result.File) { $fileOrPath = $result.File }
-            elseif ($result.Path) { $fileOrPath = $result.Path }
-            elseif ($result.ScriptPath) { $fileOrPath = $result.ScriptPath }
-            elseif ($result.User) { $fileOrPath = $result.User }
-            elseif ($result.GPO) { $fileOrPath = $result.GPO }
-            
-            $item.SubItems.Add($fileOrPath) | Out-Null
-            
-            # Handle different property names for details - Convert all to string
-            $details = ""
-            if ($result.Pattern) { $details = $result.Pattern.ToString() }
-            elseif ($result.Match) { $details = $result.Match.ToString() }
-            elseif ($result.Reference) { $details = $result.Reference.ToString() }
-            elseif ($result.Threat) { $details = $result.Threat.ToString() }
-            elseif ($result.Error) { $details = $result.Error.ToString() }
-            elseif ($result.Setting) { $details = $result.Setting.ToString() }
-            elseif ($result.Status) { $details = $result.Status.ToString() }
-            
-            $item.SubItems.Add($details) | Out-Null
-            $item.SubItems.Add($result.Remediation.ToString()) | Out-Null
-            $listView.Items.Add($item) | Out-Null
-        }
+        $item.SubItems.Add($fileOrPath) | Out-Null
+        
+        # This is the corrected section to populate the 'Details' column
+        $details = ""
+        if ($result.Pattern) { $details = $result.Pattern.ToString() }
+        elseif ($result.Match) { $details = $result.Match.ToString() }
+        elseif ($result.Reference) { $details = $result.Reference.ToString() }
+        elseif ($result.Threat) { $details = $result.Threat.ToString() }
+        elseif ($result.Error) { $details = $result.Error.ToString() }
+        elseif ($result.Setting) { $details = $result.Setting.ToString() }
+        elseif ($result.Status) { $details = $result.Status.ToString() }
+        elseif ($result.Path) { $details = $result.Path.ToString() } # Added this line
+        
+        $item.SubItems.Add($details) | Out-Null
+        $item.SubItems.Add($result.Remediation.ToString()) | Out-Null
+        $listView.Items.Add($item) | Out-Null
     }
+}
     
     # Initial population of ListView
     Populate-ListView -itemsToDisplay $originalResults
@@ -746,10 +747,8 @@ function Show-Results {
         }
     })
     
-
     # Export functionality
-  # Export functionality
-$exportButton.Add_Click({
+    $exportButton.Add_Click({
     $saveFileDialog = New-Object System.Windows.Forms.SaveFileDialog
     $saveFileDialog.Filter = "CSV files (*.csv)|*.csv|Text files (*.txt)|*.txt|All files (*.*)|*.*"
     $saveFileDialog.Title = "Export Results"
@@ -772,7 +771,7 @@ $exportButton.Add_Click({
                 elseif ($result.User) { $fileOrPath = $result.User }
                 elseif ($result.GPO) { $fileOrPath = $result.GPO }
                 
-                # Handle different property names for details
+                # This is the corrected section to populate the 'Details' for export
                 $details = ""
                 if ($result.Pattern) { $details = $result.Pattern.ToString() }
                 elseif ($result.Match) { $details = $result.Match.ToString() }
@@ -781,6 +780,7 @@ $exportButton.Add_Click({
                 elseif ($result.Error) { $details = $result.Error.ToString() }
                 elseif ($result.Setting) { $details = $result.Setting.ToString() }
                 elseif ($result.Status) { $details = $result.Status.ToString() }
+                elseif ($result.Path) { $details = $result.Path.ToString() } # Added this line
                 
                 # Add the new, formatted object to our array
                 $formattedResults += [pscustomobject]@{
@@ -803,7 +803,6 @@ $exportButton.Add_Click({
                 $textOutput += "=" * 80
                 $textOutput += ""
                 
-                # Use the formatted results to build the text report
                 $groupedResults = $formattedResults | Group-Object -Property Type
                 
                 foreach ($group in $groupedResults) {
@@ -828,6 +827,7 @@ $exportButton.Add_Click({
         }
     }
 })
+    
     
     # Show the form
     $form.ShowDialog() | Out-Null
