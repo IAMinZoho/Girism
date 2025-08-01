@@ -747,67 +747,75 @@ function Show-Results {
     })
     
     # Export functionality
-    $exportButton.Add_Click({
-        $saveFileDialog = New-Object System.Windows.Forms.SaveFileDialog
-        $saveFileDialog.Filter = "CSV files (*.csv)|*.csv|Text files (*.txt)|*.txt|All files (*.*)|*.*"
-        $saveFileDialog.Title = "Export Results"
-        $saveFileDialog.FileName = "ScriptSecure_Results_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
-        
-        if ($saveFileDialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
-            try {
-                $exportPath = $saveFileDialog.FileName
-                $extension = [System.IO.Path]::GetExtension($exportPath).ToLower()
+    # Export functionality
+$exportButton.Add_Click({
+    $saveFileDialog = New-Object System.Windows.Forms.SaveFileDialog
+    $saveFileDialog.Filter = "CSV files (*.csv)|*.csv|Text files (*.txt)|*.txt|All files (*.*)|*.*"
+    $saveFileDialog.Title = "Export Results"
+    $saveFileDialog.FileName = "ScriptSecure_Results_$(Get-Date -Format 'yyyyMMdd_HHmmss').csv"
+    
+    if ($saveFileDialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+        try {
+            $exportPath = $saveFileDialog.FileName
+            
+            # Use the original, unfiltered results for the export
+            $resultsToExport = $originalResults
+            
+            # The original script had logic for CSV vs TXT, which is good.
+            # We will use this to ensure the correct export method.
+            if ([System.IO.Path]::GetExtension($exportPath) -eq ".csv") {
+                # Export the full results array to a CSV
+                $resultsToExport | Export-Csv -Path $exportPath -NoTypeInformation -Encoding UTF8
+            }
+            else {
+                # This part is for text export, which is a good feature to keep.
+                $textOutput = @()
+                $textOutput += "ScriptSecure Security Analysis Report"
+                $textOutput += "Generated: $(Get-Date)"
+                $textOutput += "Total Issues Found: $($resultsToExport.Count)"
+                $textOutput += "=" * 80
+                $textOutput += ""
                 
-                if ($extension -eq '.csv') {
-                    # Export as CSV
-                    $originalResults | Export-Csv -Path $exportPath -NoTypeInformation -Encoding UTF8
-                } else {
-                    # Export as text
-                    $textOutput = @()
-                    $textOutput += "ScriptSecure Security Analysis Report"
-                    $textOutput += "Generated: $(Get-Date)"
-                    $textOutput += "Total Issues Found: $($originalResults.Count)"
-                    $textOutput += "=" * 80
-                    $textOutput += ""
+                $groupedResults = $resultsToExport | Group-Object -Property Type
+                
+                foreach ($group in $groupedResults) {
+                    $textOutput += "$($group.Name) Issues: $($group.Count)"
+                    $textOutput += "-" * 40
                     
-                    foreach ($group in $groupedResults) {
-                        $textOutput += "$($group.Name) Issues: $($group.Count)"
-                        $textOutput += "-" * 40
+                    foreach ($result in $group.Group) {
+                        # Logic to format the output for a text file
+                        $fileOrPath = ""
+                        if ($result.File) { $fileOrPath = $result.File }
+                        elseif ($result.Path) { $fileOrPath = $result.Path }
+                        elseif ($result.ScriptPath) { $fileOrPath = $result.ScriptPath }
+                        elseif ($result.User) { $fileOrPath = $result.User }
+                        elseif ($result.GPO) { $fileOrPath = $result.GPO }
                         
-                        foreach ($result in $group.Group) {
-                            $fileOrPath = ""
-                            if ($result.File) { $fileOrPath = $result.File }
-                            elseif ($result.Path) { $fileOrPath = $result.Path }
-                            elseif ($result.ScriptPath) { $fileOrPath = $result.ScriptPath }
-                            elseif ($result.User) { $fileOrPath = $result.User }
-                            elseif ($result.GPO) { $fileOrPath = $result.GPO }
-                            
-                            $details = ""
-                            if ($result.Pattern) { $details = $result.Pattern.ToString() }
-                            elseif ($result.Match) { $details = $result.Match.ToString() }
-                            elseif ($result.Reference) { $details = $result.Reference.ToString() }
-                            elseif ($result.Threat) { $details = $result.Threat.ToString() }
-                            elseif ($result.Error) { $details = $result.Error.ToString() }
-                            elseif ($result.Setting) { $details = $result.Setting.ToString() }
-                            elseif ($result.Status) { $details = $result.Status.ToString() }
-                            
-                            $textOutput += "File/Path: $fileOrPath"
-                            $textOutput += "Details: $details"
-                            $textOutput += "Remediation: $($result.Remediation)"
-                            $textOutput += ""
-                        }
+                        $details = ""
+                        if ($result.Pattern) { $details = $result.Pattern.ToString() }
+                        elseif ($result.Match) { $details = $result.Match.ToString() }
+                        elseif ($result.Reference) { $details = $result.Reference.ToString() }
+                        elseif ($result.Threat) { $details = $result.Threat.ToString() }
+                        elseif ($result.Error) { $details = $result.Error.ToString() }
+                        elseif ($result.Setting) { $details = $result.Setting.ToString() }
+                        elseif ($result.Status) { $details = $result.Status.ToString() }
+                        
+                        $textOutput += "File/Path: $fileOrPath"
+                        $textOutput += "Details: $details"
+                        $textOutput += "Remediation: $($result.Remediation)"
                         $textOutput += ""
                     }
-                    
-                    $textOutput | Out-File -FilePath $exportPath -Encoding UTF8
+                    $textOutput += ""
                 }
-                
-                [System.Windows.Forms.MessageBox]::Show("Results exported successfully to: $exportPath", "Export Complete", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information) | Out-Null
-            } catch {
-                [System.Windows.Forms.MessageBox]::Show("Error exporting results: $($_.Exception.Message)", "Export Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error) | Out-Null
+                $textOutput | Out-File -FilePath $exportPath -Encoding UTF8
             }
+            
+            [System.Windows.Forms.MessageBox]::Show("Results exported successfully to: $exportPath", "Export Complete", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information) | Out-Null
+        } catch {
+            [System.Windows.Forms.MessageBox]::Show("Error exporting results: $($_.Exception.Message)", "Export Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error) | Out-Null
         }
-    })
+    }
+})
     
     # Show the form
     $form.ShowDialog() | Out-Null
