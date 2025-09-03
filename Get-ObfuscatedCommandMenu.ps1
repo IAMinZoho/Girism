@@ -115,10 +115,7 @@ function global:prompt { "PCT> " };
         Name    = "Show Obfuscation Info"
         Command = $null
     }
-    7 = @{
-        Name    = "Exit"
-        Command = $null
-    }
+ 
 }
 
     # Function to obfuscate a PowerShell command using multiple advanced techniques
