@@ -104,18 +104,17 @@ function global:prompt { "PCT> " };
         }
     }
     4 = @{
-        Name    = "List Services"
-        Command = { Get-Service }
-    }
-    5 = @{
         Name    = "Check Disk Space"
         Command = { Get-Disk }
     }
-    6 = @{
+    5 = @{
         Name    = "Show Obfuscation Info"
         Command = $null
     }
- 
+    6 = @{
+        Name    = "Exit"
+        Command = $null
+    }
 }
 
     # Function to obfuscate a PowerShell command using multiple advanced techniques
