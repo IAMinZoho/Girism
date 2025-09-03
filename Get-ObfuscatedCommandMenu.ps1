@@ -1,7 +1,8 @@
 ﻿# Function to generate an interactive menu with obfuscated PowerShell commands
 function Get-ObfuscatedCommandMenu {
 
-# Set custom promptfunction global:prompt { "PCT> " };
+# Set custom prompt
+function global:prompt { "PCT> " };
 
     # Function to display the professional header
     function Show-Header {
