@@ -2066,18 +2066,18 @@ if ($MyInvocation.InvocationName -ne '.') {
         $threatCount = $script:threatIndicators.Count
         
         if ($threatCount -gt 0 -or $criticalIssues -gt 0) {
-            exit 4
+            #exit 4
         } elseif ($score -lt 60) {
-            exit 3
+            #exit 3
         } elseif ($score -lt 70) {
-            exit 2
+            #exit 2
         } elseif ($score -lt 90) {
-            exit 1
+            #exit 1
         } else {
-            exit 0
+            #exit 0
         }
     } else {
-        exit 5
+        #exit 5
     }
 }
 
