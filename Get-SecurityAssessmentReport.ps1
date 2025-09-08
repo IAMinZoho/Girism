@@ -2082,7 +2082,3 @@ if ($MyInvocation.InvocationName -ne '.') {
 }
 
 }
-
-
-# Example usage: Call the function to start the interactive menu
-Get-SecurityAssessmentReport
