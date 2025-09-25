@@ -22,10 +22,9 @@
     Include advanced threat detection and APT indicator checks.
 .NOTES
     Author: @dGiri
-    Version: 3.1Updated: Complete UI overhaul with historical tracking and professional design.
+    Version: 3.1
+    Updated: Complete UI overhaul with historical tracking and professional design.
 #>
-
-
 
 function Get-SecurityAssessmentReport {
 
@@ -1698,11 +1697,12 @@ function Show-ResultsForm {
     $categoryLabel.Font = New-Object System.Drawing.Font("Segoe UI", 9)
     $filterPanel.Controls.Add($categoryLabel)
     
+    # Create categoryComboBox initially with just "All"
     $categoryComboBox = New-Object System.Windows.Forms.ComboBox
     $categoryComboBox.Location = New-Object System.Drawing.Point(75, 10)
     $categoryComboBox.Size = New-Object System.Drawing.Size(150, 20)
     $categoryComboBox.Font = New-Object System.Drawing.Font("Segoe UI", 9)
-    $categoryComboBox.Items.AddRange(("All", "Authentication", "Network Security", "Windows Defender", "Hardware Security"))
+    $categoryComboBox.Items.Add("All")
     $categoryComboBox.SelectedIndex = 0
     $filterPanel.Controls.Add($categoryComboBox)
     
@@ -1764,6 +1764,26 @@ function Show-ResultsForm {
     $resetFilterButton.Font = New-Object System.Drawing.Font("Segoe UI", 9)
     $resetFilterButton.BackColor = [System.Drawing.Color]::FromArgb(220, 220, 220)
     $filterPanel.Controls.Add($resetFilterButton)
+    
+    # Populate category dropdown after DataGridView is filled
+    $categoryComboBox.Items.Clear()
+    $categoryComboBox.Items.Add("All")
+    
+    # Get unique categories from the DataGridView rows
+    $categories = @()
+    foreach ($row in $dataGridView.Rows) {
+        $category = $row.Cells[1].Value  # Category is in column 1 (index 1)
+        if ($category -and $category -notin $categories) {
+            $categories += $category
+        }
+    }
+    
+    # Sort and add categories to dropdown
+    $categories = $categories | Sort-Object
+    foreach ($category in $categories) {
+        $categoryComboBox.Items.Add($category)
+    }
+    $categoryComboBox.SelectedIndex = 0
     
     $applyFilterButton.Add_Click({
         $categoryFilter = $categoryComboBox.SelectedItem
