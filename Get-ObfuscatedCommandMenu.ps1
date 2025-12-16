@@ -255,7 +255,7 @@ function global:prompt { "PCT> " };
 
         # Validate input
         if ($choice -match '^\d+$' -and $menuOptions.ContainsKey([int]$choice)) {
-            if ($choice -eq 6) {
+            if ($choice -eq 7) {
                 Clear-Host
                 Show-Header
                 Write-Host "┌─ GOODBYE ───────────────────────────────────────────────────────────────────┐" -ForegroundColor "Magenta"
@@ -266,7 +266,7 @@ function global:prompt { "PCT> " };
                 break
             }
 
-            if ($choice -eq 5) {
+            if ($choice -eq 6) {
                 Show-ObfuscationInfo
                 continue
             }
