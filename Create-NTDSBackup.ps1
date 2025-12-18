@@ -13,8 +13,13 @@
 $Host.UI.RawUI.WindowTitle = "Active Directory Database Backup Utility [ADDBU]"
 
 # --- Global Prompt ---
+# --- Global Prompt (FIXED) ---
 function global:prompt {
-    $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
+    # Fixed admin check with proper syntax
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal]::new($identity)
+    $isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    
     $pColor = if ($isAdmin) { "Red" } else { "DarkGray" }
     $status = if ($isAdmin) { "HASH_LORD" } else { "GUEST" }
     
