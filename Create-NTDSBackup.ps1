@@ -12,26 +12,6 @@
 
 $Host.UI.RawUI.WindowTitle = "Active Directory Database Backup Utility [ADDBU]"
 
-# --- Global Prompt ---
-# --- Global Prompt (FIXED) ---
-function global:prompt {
-    # Fixed admin check with proper syntax
-    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
-    $principal = [Security.Principal.WindowsPrincipal]::new($identity)
-    $isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-    
-    $pColor = if ($isAdmin) { "Red" } else { "DarkGray" }
-    $status = if ($isAdmin) { "HASH_LORD" } else { "GUEST" }
-    
-    Write-Host " | " -NoNewline -ForegroundColor $pColor
-    Write-Host "$status " -NoNewline -ForegroundColor $pColor
-    Write-Host "| " -NoNewline -ForegroundColor $pColor
-    Write-Host (Get-Date -Format "hh:mm tt") -NoNewline -ForegroundColor Cyan
-    Write-Host " |" -ForegroundColor $pColor
-    
-    return "ADDBU> "
-}
-
 # --- Environment & Encoding ---
 $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
