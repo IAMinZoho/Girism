@@ -17,7 +17,7 @@ $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 # --- Configuration ---
-$localBackupPath  = "C:\temp\ntds_backup"
+$localBackupPath  = "C:\Temp\ntds_backup"
 $remoteBackupPath = "C:\windows\temp\db"
 $scriptStartTime  = Get-Date
 
