@@ -1,8 +1,23 @@
 ﻿# Function to generate an interactive menu with obfuscated PowerShell commands
 function Get-ObfuscatedCommandMenu {
 
-# Set custom prompt
-function global:prompt { "PCT> " };
+# Global Function
+function global:prompt {
+    $user = [Environment]::UserName
+    $comp = [Environment]::MachineName
+   
+    # Get local IP address
+    $ip = [System.Net.Dns]::GetHostByName($env:COMPUTERNAME).AddressList[0].IPAddressToString
+   
+    # ANSI escape for a "bold" feel
+    $e = [char]27
+    $promptString = "$e[91m$user$e[0m@$e[91m$comp$e[0m"
+   
+    Write-Host "[$promptString]" -NoNewline
+    Write-Host "──[$ip]" -ForegroundColor Yellow -NoNewline
+   
+    return "`n$e[91m#$e[0m "
+}
 
     # Function to display the professional header
     function Show-Header {
