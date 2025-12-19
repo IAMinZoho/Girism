@@ -82,7 +82,7 @@ function Get-GPPPassword {
     }
 
     $Host.UI.RawUI.WindowTitle = "GPP Password Scanner - Red Team Operations"
-
+    function prompt { "GPPPassword_Scanner> " }
 
     function Write-Banner {
         if ($Quiet) { return }
